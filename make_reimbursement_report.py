@@ -30,7 +30,7 @@ TOKEN_MAP = {
     "A9LfgjnWUxujnpud5E3ssKbnNiS1nxRC8Gh74hJTpump": "Daige"
 }
 
-SOL_PRICE = 190
+SOL_PRICE = 184.28
 
 
 # Sample DeFi activities data (replace with actual data)
