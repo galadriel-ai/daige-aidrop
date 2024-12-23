@@ -30,7 +30,7 @@ TOKEN_MAP = {
     "A9LfgjnWUxujnpud5E3ssKbnNiS1nxRC8Gh74hJTpump": "Daige"
 }
 
-SOL_PRICE = 184.28
+SOL_PRICE = 216.72 # SOL_PRICE_AT_DEC_18TH_5PM_UTC
 
 
 # Sample DeFi activities data (replace with actual data)
@@ -128,6 +128,8 @@ def main():
         json.dump(address_reports, report_file, indent=4)
 
     report_sol = prepare_final_report(address_reports.items(), SOL_PRICE)
+    total_sol_reimbursement = sum(report_sol.values())
+    print(f"Total SOL reimbursement to pay: {total_sol_reimbursement}")
     with open('reimbursement_report_sol.json', 'w') as report_file:
         json.dump(report_sol, report_file, indent=4)
 
