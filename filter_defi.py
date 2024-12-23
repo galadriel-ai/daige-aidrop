@@ -15,7 +15,6 @@ def filter_and_sort_transfers(transfers_data, address):
         if transfer["from_address"] == address
     ]
 
-    print(f"Found {len(filtered_transfers)} transfers for address {address}")
     # Sort transfers by time
     sorted_transfers = sorted(
         filtered_transfers,
@@ -87,6 +86,13 @@ def main():
     with open('addresses.txt', 'r') as addr_file:
         addresses = [line.strip() for line in addr_file if line.strip()]
 
+    # Remove duplicates
+    unique_addresses = list(set(addresses))
+
+    # Overwrite addresses.txt with unique addresses
+    with open('addresses.txt', 'w') as addr_file:
+        addr_file.write('\n'.join(unique_addresses) + '\n')
+
     address_reports = {}
     for address in addresses:
         filtered_sorted_transfers = filter_and_sort_transfers(transfers_data, address)
@@ -94,8 +100,20 @@ def main():
         loss = calculate_daige_loss(activity_list)
         address_reports[address] = loss
 
+    # Calculate total reimbursement and top 10 addresses with highest loss
+    total_reimbursement = sum(address_reports.values())
+    top_10_losses = sorted(address_reports.items(), key=lambda x: x[1])[:10]
+
+    print(f"Total reimbursement to pay: {total_reimbursement}")
+    print("Top 10 addresses with highest losses:")
+    for address, amount in top_10_losses:
+        print(f"{address}: {amount}")
+
+    # Save to output file
     with open('reimbursement_report.json', 'w') as report_file:
         json.dump(address_reports, report_file, indent=4)
+
+    print("Reimbursement report saved to reimbursement_report.json")
 
 if __name__ == "__main__":
     main()
