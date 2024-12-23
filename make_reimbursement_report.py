@@ -79,6 +79,16 @@ def calculate_daige_loss(activity_list):
 
     return net
 
+
+def convert_to_sol(pairs, sol_price):
+    sol_pairs = {}
+    for address, usd_amount in pairs:
+        sol_amount = usd_amount / sol_price
+        sol_pairs[address] = sol_amount
+
+    return sol_pairs
+
+
 def main():
     # Read transfers data from token_transfers.json
     with open('defi_activities.json', 'r') as file:
@@ -110,11 +120,12 @@ def main():
     for address, amount in top_10_losses:
         print(f"{address}: {amount}")
 
-    # Save to output file
     with open('reimbursement_report.json', 'w') as report_file:
         json.dump(address_reports, report_file, indent=4)
 
-    print("Reimbursement report saved to reimbursement_report.json")
+    report_sol = convert_to_sol(address_reports.items(), 190)
+    with open('reimbursement_report_sol.json', 'w') as report_file:
+        json.dump(report_sol, report_file, indent=4)
 
 if __name__ == "__main__":
     main()
