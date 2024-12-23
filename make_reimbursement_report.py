@@ -30,6 +30,8 @@ TOKEN_MAP = {
     "A9LfgjnWUxujnpud5E3ssKbnNiS1nxRC8Gh74hJTpump": "Daige"
 }
 
+SOL_PRICE = 190
+
 
 # Sample DeFi activities data (replace with actual data)
 def process_defi_activities(defi_activities, token_contract):
@@ -79,12 +81,14 @@ def calculate_daige_loss(activity_list):
 
     return net
 
-
-def convert_to_sol(pairs, sol_price):
+# convert prices to SOL
+# remove positive and 0 values
+def prepare_final_report(pairs, sol_price):
     sol_pairs = {}
     for address, usd_amount in pairs:
-        sol_amount = usd_amount / sol_price
-        sol_pairs[address] = sol_amount
+        sol_amount = abs(usd_amount / sol_price)
+        if usd_amount < 0:
+            sol_pairs[address] = sol_amount
 
     return sol_pairs
 
@@ -123,7 +127,7 @@ def main():
     with open('reimbursement_report.json', 'w') as report_file:
         json.dump(address_reports, report_file, indent=4)
 
-    report_sol = convert_to_sol(address_reports.items(), 190)
+    report_sol = prepare_final_report(address_reports.items(), SOL_PRICE)
     with open('reimbursement_report_sol.json', 'w') as report_file:
         json.dump(report_sol, report_file, indent=4)
 
