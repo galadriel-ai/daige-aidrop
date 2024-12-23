@@ -13,8 +13,9 @@ def find_new_addresses(old_file, new_file):
 
     new_only = new_addresses - old_addresses
 
-    for address in new_only:
-        print(address)
+    result = {address: new_data[address] for address in new_only}
+
+    print(json.dumps(result, indent=4))
 
 if __name__ == "__main__":
     old_file = "reimbursement_report_sol_old.json"
