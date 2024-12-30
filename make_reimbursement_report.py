@@ -101,13 +101,6 @@ def main():
     with open('addresses.txt', 'r') as addr_file:
         addresses = [line.strip() for line in addr_file if line.strip()]
 
-    # Remove duplicates
-    unique_addresses = list(set(addresses))
-
-    # Overwrite addresses.txt with unique addresses
-    with open('addresses.txt', 'w') as addr_file:
-        addr_file.write('\n'.join(unique_addresses) + '\n')
-
     address_reports = {}
     for address in addresses:
         filtered_sorted_transfers = filter_and_sort_transfers(transfers_data, address)
