@@ -68,16 +68,17 @@ def calculate_daige_loss(activity_list):
 
     for activity_type, value, router_info in activity_list:
         # Swap from Daige to SOL - gain
-        if activity_type == 'ACTIVITY_TOKEN_SWAP' and router_info['from']['token'] == 'Daige':
-            net += value
-        # Swap from SOL to Daige - loss
-        if activity_type == 'ACTIVITY_TOKEN_SWAP' and router_info['from']['token'] == 'SOL':
-            net -= value
-        if activity_type == 'ACTIVITY_AGG_TOKEN_SWAP' and router_info['from']['token'] == 'Daige':
-            net += value
-        # Swap from SOL to Daige - loss
-        if activity_type == 'ACTIVITY_AGG_TOKEN_SWAP' and router_info['from']['token'] == 'SOL':
-            net -= value
+        if activity_type == 'ACTIVITY_TOKEN_SWAP':
+            if router_info['from']['token'] == 'Daige':
+                net += value
+            else:
+                net -= value
+
+        if activity_type == 'ACTIVITY_AGG_TOKEN_SWAP':
+            if router_info['from']['token'] == 'Daige':
+                net += value
+            else:
+                net -= value
 
     return net
 
